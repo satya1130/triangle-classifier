@@ -45,3 +45,7 @@ def test_valid_triangle():
 def test_right_triangle_side_order():
     assert classify_triangle(5, 3, 4) == "Right Scalene"
     assert classify_triangle(4, 5, 3) == "Right Scalene"
+
+
+def test_right_triangle_with_non_integer_side():
+    assert classify_triangle(1, math.sqrt(3), 2) == "Right Scalene"
