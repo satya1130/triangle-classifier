@@ -1,68 +1,137 @@
-
 # Triangle Classifier
 
 ## Project Description
 
-This project is a triangle classifier written in Python. It takes three side lengths and determines whether they form a valid triangle. If the triangle is valid, the program classifies it as equilateral, isosceles, or scalene. It also identifies right triangles.
+This project is a triangle classifier created using Python for my Software Engineering assignment. The program takes three side lengths and determines whether they form a valid triangle. If the triangle is valid, it identifies whether the triangle is equilateral, isosceles, or scalene. It also checks whether the triangle has a right angle.
+
+The purpose of this project is to practice Python programming, unit testing, reviewing AI-generated suggestions, and testing software based on customer requirements.
+
+## Files in the Project
+
+- **triangle.py:** Contains the functions that validate and classify triangles.
+- **test_triangle.py:** Contains unit tests for the different triangle types and invalid inputs.
+- **test_acceptance.py:** Contains an acceptance test based on the stained-glass studio requirements.
+- **requirements.txt:** Contains the pytest dependency.
+- **README.md:** Explains the project, testing process, and AI usage.
 
 ## How to Run the Tests
 
-Install pytest:
+First, open the repository in GitHub Codespaces.
 
-```bash
-python -m pip install -r requirements.txt
-```
+Install the required package:
 
-Run all tests:
+`python -m pip install -r requirements.txt`
 
-```bash
-python -m pytest -v
-```
+Run all the tests:
 
-## Equivalence Classes and Boundaries
+`python -m pytest -v`
 
-The following cases were identified:
+### Test Results
 
-1. Invalid triangles with zero or negative sides.
-2. Invalid triangles that fail the triangle inequality.
-3. Degenerate triangles where two sides add up to the third.
-4. Equilateral triangles with three equal sides.
-5. Isosceles triangles with exactly two equal sides.
-6. Scalene triangles with three different sides.
-7. Right triangles that satisfy the Pythagorean theorem.
+I ran the tests using pytest in GitHub Codespaces. All 10 tests passed successfully with no failures.
 
-The boundary cases include zero side lengths and triangles where the sum of two sides equals the third side.
+**Results: 10 passed in 0.05 seconds.**
 
-## Why Equilateral Triangles Cannot Be Right Triangles
+## Equivalence Classes and Boundary Cases
 
-An equilateral triangle has three angles of 60 degrees. A right triangle must have one 90-degree angle, so an equilateral triangle cannot be a right triangle.
+I identified different types of inputs to make sure the program correctly classifies triangles and handles invalid side lengths.
+
+| Equivalence Class | Example | Expected Result |
+|---|---|---|
+| Zero side length | (0, 4, 5) | Invalid |
+| Negative side length | (-1, 4, 5) | Invalid |
+| Triangle inequality fails | (1, 2, 10) | Invalid |
+| Degenerate triangle | (1, 2, 3) | Invalid |
+| Equilateral triangle | (5, 5, 5) | Equilateral |
+| Isosceles triangle | (5, 5, 6) | Isosceles |
+| Scalene triangle | (4, 5, 6) | Scalene |
+| Right scalene triangle | (3, 4, 5) | Right Scalene |
+| Right isosceles triangle | (5, 5, 5 × √2) | Right Isosceles |
+
+### Boundary Testing
+
+One important boundary case is when the sum of two sides equals the third side. For example, sides 1, 2, and 3 cannot form a valid triangle because 1 + 2 = 3.
+
+I also tested zero and negative side lengths because a triangle must have three positive sides.
+
+For right triangles, the program uses `math.isclose()` instead of directly comparing floating-point calculations with `==`. This helps prevent incorrect results caused by small rounding differences.
+
+## Why an Equilateral Triangle Cannot Be a Right Triangle
+
+An equilateral triangle has three equal angles of 60 degrees. A right triangle must have one angle of 90 degrees, so an equilateral triangle cannot also be a right triangle.
 
 ## Copilot Review Log
 
-Complete this table using the suggestions you actually receive from GitHub Copilot.
+The purpose of reviewing Copilot suggestions is to make sure the tests follow the assignment requirements instead of automatically accepting AI-generated code.
+
+The following table records the test cases and checks. The Copilot suggestion decisions need to be confirmed from the actual Copilot session.
 
 | Test | Copilot-suggested? | Kept / Edited / Rejected | Why |
 |---|---|---|---|
-| test_invalid_triangle | | | |
-| test_degenerate_triangle | | | |
-| test_equilateral_triangle | | | |
-| test_isosceles_triangle | | | |
-| test_scalene_triangle | | | |
-| test_right_triangle | | | |
-| test_right_isosceles_triangle | | | |
+| test_invalid_triangle | Not confirmed | Not confirmed | Verified that zero and negative side lengths return Invalid. |
+| test_degenerate_triangle | Not confirmed | Not confirmed | Verified that sides 1, 2, and 3 return Invalid. |
+| test_equilateral_triangle | Not confirmed | Not confirmed | Verified that three equal sides return Equilateral. |
+| test_isosceles_triangle | Not confirmed | Not confirmed | Verified that exactly two equal sides return Isosceles. |
+| test_scalene_triangle | Not confirmed | Not confirmed | Verified that three different sides return Scalene. |
+| test_right_triangle | Not confirmed | Not confirmed | Verified that sides 3, 4, and 5 return Right Scalene. |
+| test_right_isosceles_triangle | Not confirmed | Not confirmed | Verified that non-integer side lengths return Right Isosceles. |
+
+### Important Code Review
+
+One important issue I checked was how the program identifies right triangles.
+
+Using `==` for floating-point calculations can produce incorrect results because of rounding differences. The program uses `math.isclose()` to compare the squared side lengths with a tolerance.
+
+I also checked a right isosceles triangle with sides 5, 5, and 5 × √2. The test passed and returned Right Isosceles.
+
+This confirms the code handles the tested floating-point case. An actual Copilot suggestion that required correction still needs to be recorded to meet the review-log requirement.
+
+## Customer Requirements
+
+The customer is a stained-glass studio that needs a program to identify triangle shapes before creating glass pieces.
+
+The program needs to determine whether the three side lengths form a valid triangle, identify the shape, and flag right-angle pieces because they require reinforced corners.
 
 ## Acceptance Criteria
 
-1. The program returns "Invalid" for zero, negative, or degenerate side lengths without crashing.
-2. Valid triangles are classified as "Equilateral", "Isosceles", or "Scalene" based on their side lengths.
-3. Valid right triangles have "Right " at the beginning of their classification to identify pieces requiring reinforced corners.
+### Acceptance Criterion 1: Triangle Validation
+
+When a customer enters three side lengths, the program must return "Invalid" if any side is zero or negative or if the triangle inequality is not satisfied. The program must not crash for these inputs.
+
+### Acceptance Criterion 2: Triangle Classification
+
+For valid triangles, the program must return "Equilateral" when all three sides are equal, "Isosceles" when exactly two sides are equal, and "Scalene" when all three sides are different.
+
+### Acceptance Criterion 3: Right-Angle Identification
+
+When the three side lengths form a right triangle, the program must return a classification beginning with "Right ". This identifies glass pieces that need reinforced corners.
+
+## Acceptance Testing
+
+The `test_acceptance.py` file contains an acceptance test that calls the `classify_triangle()` function using different customer scenarios.
+
+The test checks whether the program correctly handles invalid triangles, identifies valid triangle shapes, and flags right triangles.
+
+The acceptance test passed when I ran pytest in GitHub Codespaces.
+
+The assignment requires the acceptance test to be independently written without Copilot. Since an initial example was provided through ChatGPT, the final test still needs to be independently authored and verified.
 
 ## AI-Use Disclosure
 
-GitHub Copilot: [Describe the actual unit test suggestions received, which were accepted or edited, and what was checked.]
+I used ChatGPT to help me understand the assignment, create the triangle classifier, prepare reference unit tests, create an example acceptance test, and organize the README documentation.
 
-ChatGPT: Used for reference implementation code, example tests, and README drafting.
+I reviewed the code against the assignment requirements and ran the tests using pytest in GitHub Codespaces. I checked that the program correctly identifies invalid triangles, equilateral triangles, isosceles triangles, scalene triangles, and right triangles.
 
-Verification: [Describe the tests run and the results you personally verified.]
+I also checked the degenerate boundary case and verified that the program uses `math.isclose()` for floating-point comparisons.
 
-Acceptance test: [Describe how you independently wrote this test without Copilot, as required.]
+All 10 tests passed successfully.
+
+GitHub Copilot was required for the unit-testing portion of the assignment. The actual suggestions and review decisions still need to be documented.
+
+The final acceptance test must be independently written without Copilot, as required by the professor.
+
+## Conclusion
+
+This project helped me understand how triangle classification works and why testing is important in software development. I learned how to check different inputs, test boundary cases, and verify that a program produces the expected results.
+
+I also learned that AI-generated code needs to be reviewed carefully because passing tests alone does not guarantee that every requirement has been met.
