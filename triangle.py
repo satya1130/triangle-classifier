@@ -26,9 +26,13 @@ def classify_triangle(a, b, c) -> str:
 
     sides = sorted([a, b, c])
 
+    largest = sides[2]
+    x = sides[0] / largest
+    y = sides[1] / largest
+
     if math.isclose(
-        sides[0] ** 2 + sides[1] ** 2,
-        sides[2] ** 2,
+        x ** 2 + y ** 2,
+        1.0,
         rel_tol=1e-9,
         abs_tol=1e-12
     ):
