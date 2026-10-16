@@ -17,8 +17,9 @@ def classify_triangle(a, b, c) -> str:
         return "Invalid"
 
     if a == b == c:
-        triangle_type = "Equilateral"
-    elif a == b or a == c or b == c:
+        return "Equilateral"
+
+    if a == b or a == c or b == c:
         triangle_type = "Isosceles"
     else:
         triangle_type = "Scalene"

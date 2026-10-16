@@ -49,3 +49,15 @@ def test_right_triangle_side_order():
 
 def test_right_triangle_with_non_integer_side():
     assert classify_triangle(1, math.sqrt(3), 2) == "Right Scalene"
+
+
+def test_very_small_positive_equilateral_triangle():
+    assert classify_triangle(1e-7, 1e-7, 1e-7) == "Equilateral"
+
+
+def test_nearly_degenerate_but_valid_triangle():
+    assert classify_triangle(2.0, 3.0, 4.999999) == "Scalene"
+
+
+def test_triangle_just_beyond_degenerate_boundary():
+    assert classify_triangle(2.0, 3.0, 5.000001) == "Invalid"
